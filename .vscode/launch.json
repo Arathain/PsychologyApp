@@ -1,0 +1,46 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Attach to Framework Debugger",
+      "type": "clr",
+      "request": "launch",
+      "preLaunchTask": "Build: Framework Debug",
+      "program": "${workspaceFolder}/PsychologyApp/bin/x64/Debug/net461/PsychologyApp.exe",
+      "args": [],
+      "cwd": "${workspaceFolder}/PsychologyApp/bin/x64/Debug/net461",
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen"
+    },
+    {
+      "name": "Attach to Mono Debugger",
+      "type": "mono",
+      "request": "launch",
+      "preLaunchTask": "Build: Mono Debug",
+      "program": "${workspaceFolder}/PsychologyApp/bin/x64/Debug/net461/PsychologyApp.exe",
+      "args": [],
+      "env": {
+        "LD_LIBRARY_PATH": "${workspaceFolder}/PsychologyApp/bin/x64/Debug/net461/lib64",
+        "DYLD_LIBRARY_PATH": "${workspaceFolder}/PsychologyApp/bin/x64/Debug/net461/osx"
+      },
+      "cwd": "${workspaceFolder}/PsychologyApp/bin/x64/Debug/net461",
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen"
+    },
+    {
+      "name": "Attach to .NET 6 Debugger",
+      "type": "coreclr",
+      "request": "launch",
+      "preLaunchTask": "Build: .NET 6 Debug",
+      "program": "${workspaceFolder}/PsychologyApp/bin/x64/Debug/net6.0/PsychologyApp.dll",
+      "args": [],
+      "env": {
+        "LD_LIBRARY_PATH": "${workspaceFolder}/PsychologyApp/bin/x64/Debug/net6.0/lib64",
+        "DYLD_LIBRARY_PATH": "${workspaceFolder}/PsychologyApp/bin/x64/Debug/net6.0/osx"
+      },
+      "cwd": "${workspaceFolder}/PsychologyApp/bin/x64/Debug/net6.0",
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen"
+    }
+  ]
+}

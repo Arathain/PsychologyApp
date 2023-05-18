@@ -1,0 +1,34 @@
+<Project>
+	<PropertyGroup>
+		<BaseIntermediateOutputPath>obj\$(MSBuildPsychologyApp)</BaseIntermediateOutputPath>
+		<Platforms>x64;x86</Platforms>
+	</PropertyGroup>
+	<Import Sdk="Microsoft.NET.Sdk" Project="Sdk.props" />
+	<PropertyGroup>
+		<OutputType>Exe</OutputType>
+		<TargetFramework>net461</TargetFramework>
+		<TargetName>PsychologyApp</TargetName>
+		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+		<GenerateTargetFrameworkAttribute>false</GenerateTargetFrameworkAttribute>
+		<LangVersion>7.3</LangVersion>
+		<StartupObject>PsychologyApp.Program</StartupObject>
+		<AssemblyName>PsychologyApp</AssemblyName>
+		<RootNamespace>PsychologyApp</RootNamespace>
+		<TargetLatestRuntimePatch>true</TargetLatestRuntimePatch>
+		<RuntimeIdentifiers>win-x64;osx-x64;linux-x64</RuntimeIdentifiers>
+		<ApplicationIcon />
+	</PropertyGroup>
+	<PropertyGroup>
+		<DefaultItemExcludes>$(DefaultItemExcludes);DllMap.cs</DefaultItemExcludes>
+	</PropertyGroup>
+	<ItemGroup>
+		<Content Include="Content\**\*.*">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+	</ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\FNA\FNA.csproj" />
+	</ItemGroup>
+	<Import Project=".\CopyFNALibs.targets" />
+	<Import Sdk="Microsoft.NET.Sdk" Project="Sdk.targets" />
+</Project>

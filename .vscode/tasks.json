@@ -1,0 +1,312 @@
+{
+  "version": "2.0.0",
+  "options": {
+    "cwd": "${workspaceRoot}"
+  },
+  "windows": {
+    "options": {
+      "shell": {
+        "executable": "cmd.exe",
+        "args": [
+          "/d",
+          "/c"
+        ]
+      }
+    }
+  },
+  "presentation": {
+    "reveal": "always",
+    "focus": true,
+    "panel": "shared"
+  },
+  "tasks": [
+    {
+      "label": "Build: Mono Release",
+      "command": "msbuild",
+      "args": [
+        "-restore:True",
+        "${workspaceFolder}/PsychologyApp.Framework.sln",
+        "-p:Configuration=Release",
+        "-p:Platform=x64"
+      ],
+      "type": "shell",
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "problemMatcher": "$msCompile"
+    },
+    {
+      "label": "Run: Mono Release",
+      "command": "mono",
+      "args": [
+        "PsychologyApp.exe"
+      ],
+      "options": {
+        "env": {
+          "LD_LIBRARY_PATH": "./lib64",
+          "DYLD_LIBRARY_PATH": "./osx"
+        },
+        "cwd": "${workspaceFolder}/PsychologyApp/bin/x64/Release/net461"
+      },
+      "type": "process",
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Build & Run: Mono Release",
+      "dependsOn": [
+        "Build: Mono Release",
+        "Run: Mono Release"
+      ],
+      "dependsOrder": "sequence",
+      "type": "shell",
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Build: Mono Debug",
+      "command": "msbuild",
+      "args": [
+        "-restore:True",
+        "${workspaceFolder}/PsychologyApp.Framework.sln",
+        "-p:Configuration=Debug",
+        "-p:Platform=x64"
+      ],
+      "type": "shell",
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Run: Mono Debug",
+      "command": "mono",
+      "args": [
+        "PsychologyApp.exe"
+      ],
+      "options": {
+        "env": {
+          "LD_LIBRARY_PATH": "./lib64",
+          "DYLD_LIBRARY_PATH": "./osx"
+        },
+        "cwd": "${workspaceFolder}/PsychologyApp/bin/x64/Debug/net461"
+      },
+      "type": "process",
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Build & Run: Mono Debug",
+      "dependsOn": [
+        "Build: Mono Debug",
+        "Run: Mono Debug"
+      ],
+      "dependsOrder": "sequence",
+      "type": "shell",
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Build & Run: .NET 6 Debug",
+      "type": "shell",
+      "dependsOrder": "sequence",
+      "dependsOn": [
+        "Build: .NET 6 Debug",
+        "Run: .NET 6 Debug"
+      ],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Build: .NET 6 Debug",
+      "command": "dotnet",
+      "args": [
+        "build",
+        "./PsychologyApp/PsychologyApp.Core.csproj",
+        "-p:SolutionDir=${workspaceFolder}/",
+        "-p:Platform=x64"
+      ],
+      "type": "shell",
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Run: .NET 6 Debug",
+      "command": "dotnet",
+      "args": [
+        "./PsychologyApp.dll"
+      ],
+      "options": {
+        "env": {
+          "LD_LIBRARY_PATH": "./lib64",
+          "DYLD_LIBRARY_PATH": "./osx"
+        },
+        "cwd": "${workspaceFolder}/PsychologyApp/bin/x64/Debug/net6.0"
+      },
+      "type": "process",
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Build: .NET 6 Release",
+      "command": "dotnet",
+      "args": [
+        "build",
+        "./PsychologyApp/PsychologyApp.Core.csproj",
+        "--configuration",
+        "Release",
+        "-p:SolutionDir=${workspaceFolder}/",
+        "-p:Platform=x64"
+      ],
+      "type": "shell",
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Run: .NET 6 Release",
+      "command": "dotnet",
+      "args": [
+        "./PsychologyApp.dll"
+      ],
+      "options": {
+        "env": {
+          "LD_LIBRARY_PATH": "./lib64",
+          "DYLD_LIBRARY_PATH": "./osx"
+        },
+        "cwd": "${workspaceFolder}/PsychologyApp/bin/x64/Release/net6.0"
+      },
+      "type": "process",
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Build & Run: .NET 6 Release",
+      "dependsOrder": "sequence",
+      "dependsOn": [
+        "Build: .NET 6 Release",
+        "Run: .NET 6 Release"
+      ],
+      "type": "shell",
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Build: Framework Debug",
+      "command": "MsBuild.exe",
+      "args": [
+        "-restore:True",
+        "${workspaceFolder}/PsychologyApp.Framework.sln",
+        "-p:Configuration=Debug",
+        "-p:Platform=x64"
+      ],
+      "type": "shell",
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Run: Framework Debug",
+      "command": "PsychologyApp.exe",
+      "options": {
+        "cwd": "${workspaceFolder}/PsychologyApp/bin/x64/Debug/net461"
+      },
+      "type": "process",
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Build & Run: Framework Debug",
+      "dependsOn": [
+        "Build: Framework Debug",
+        "Run: Framework Debug"
+      ],
+      "dependsOrder": "sequence",
+      "type": "shell",
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Build: Framework Release",
+      "command": "MsBuild.exe",
+      "args": [
+        "-restore:True",
+        "${workspaceFolder}/PsychologyApp.Framework.sln",
+        "-p:Configuration=Release",
+        "-p:Platform=x64"
+      ],
+      "type": "shell",
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Run: Framework Release",
+      "command": "PsychologyApp.exe",
+      "options": {
+        "cwd": "${workspaceFolder}/PsychologyApp/bin/x64/Release/net461"
+      },
+      "type": "process",
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Build & Run: Framework Release",
+      "dependsOn": [
+        "Build: Framework Release",
+        "Run: Framework Release"
+      ],
+      "dependsOrder": "sequence",
+      "type": "shell",
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "problemMatcher": []
+    }
+  ]
+}
