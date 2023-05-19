@@ -25,6 +25,10 @@ namespace PsychologyApp.code {
             isPressed = ean;
         }
         
+        public virtual void release() {
+            setPressed(false);
+        }
+        
         public virtual void press() {
             if(!isPressed) {
                 setPressed(true);

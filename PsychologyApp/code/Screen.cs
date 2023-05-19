@@ -13,21 +13,13 @@ namespace PsychologyApp.code
     public abstract class Screen {
         protected List<ScreenObject> objects;
 
-        private SpriteBatch batch;
-
         public Screen(List<ScreenObject> setup) {
             foreach(ScreenObject s in setup) {
                 s.setScreen(this);
             }
             this.objects = setup;
         }
-        public virtual void load(GraphicsDevice g, ContentManager cnt) {
-            batch = new SpriteBatch(g);
-        }
-        public virtual void unload() {
-            batch.Dispose();
-        }
-
+    
         public virtual void update(GameTime gameTime, MouseState current, MouseState previous) {
             if(current.LeftButton == ButtonState.Pressed && previous.LeftButton == ButtonState.Released) {
                 //click
@@ -44,7 +36,7 @@ namespace PsychologyApp.code
                 //release
                 foreach(ScreenObject o in objects) {
                     if(o is Button b) {
-                        b.setPressed(false);
+                        b.release();
                     }
                 }
             }
@@ -53,7 +45,7 @@ namespace PsychologyApp.code
 
         }
         
-        public void draw(GameTime gameTime) {
+        public void draw(GameTime gameTime, SpriteBatch batch) {
             batch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.Default, RasterizerState.CullNone);
             drawBackground();
             foreach(ScreenObject o in objects) {

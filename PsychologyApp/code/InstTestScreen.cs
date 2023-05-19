@@ -40,7 +40,10 @@ namespace PsychologyApp.code
                 };
                 trialCounter++;
             };
-            time.AutoReset = true;
+            time.Disposed += ( sender, e ) => {
+                resetTimer();
+            };
+            //time.AutoReset = true;
             return time;
         }
         public void escape() {
@@ -69,30 +72,29 @@ namespace PsychologyApp.code
             
         }
         private void makeCD() {
-            cooldown = new Timer(1000);
+            cooldown = new Timer(200);
             cooldown.Start();
             cooldown.AutoReset = false;
             cooldown.Elapsed += ( sender, e ) => {
                 setPressed(false);
+                if(this.screen.Invoke() is InstTestScreen scr && scr.sound != null && scr.sound.State == SoundState.Playing) {
+                    prog++;
+                    if(prog > 3) {
+                        scr.sound.Pause();
+                        scr.sound.Dispose();
+                        scr.escape();
+                        prog = 0;
+                    }
+                }
             };
         }
         public override void press() {
             if(!isPressed) {
                 setPressed(true);
-                makeCD();
             }
         }
-        public override void onPress() {
-            if(this.screen.Invoke() is InstTestScreen scr && scr.sound != null && scr.sound.State == SoundState.Playing) {
-                prog++;
-                if(prog > 3) {
-                    scr.sound.Pause();
-                    scr.sound.Dispose();
-                    scr.escape();
-                    prog = 0;
-                }
-            }
-            
+        public override void release(){
+            makeCD();
         }
         public override bool isHovering(MouseState mouse) {
             Vector2 centre = Program.gameInstance.getCentre();

@@ -13,6 +13,7 @@ namespace PsychologyApp {
 
 		private int width, height;
 		private Vector2 centre;
+		private SpriteBatch batch;
 		public static int[] intervals = new int[]{
 			14100,
 			14900,
@@ -60,22 +61,20 @@ namespace PsychologyApp {
 			Window.AllowUserResizing = true;
 			IsMouseVisible = true;
 			List<ScreenObject> s = new List<ScreenObject>();
-			s.Add(new StopButton(0, 0));
-			s.Add(new BlueLight(-30, -20));
-			s.Add(new OrangeLight(30, -20));
-			currentScreen = new InstTestScreen(s);
+			s.Add(new StartButton(0, 0));
+			currentScreen = new StartScreen(s);
 		}
 
 		protected override void LoadContent() {
 			base.LoadContent();
 			ContentDocks.load(Content);
-			currentScreen.load(graphics.GraphicsDevice, Content);
+			batch = new SpriteBatch(graphics.GraphicsDevice);
 		}
 
 		protected override void UnloadContent() {
 			base.UnloadContent();
 			ContentDocks.unload();
-			currentScreen.unload();
+			batch.Dispose();
 		}
 
 		protected override void Update(GameTime gameTime) {
@@ -95,7 +94,7 @@ namespace PsychologyApp {
 			//
 
 			GraphicsDevice.Clear(Color.SlateGray);
-			currentScreen.draw(gameTime);
+			currentScreen.draw(gameTime, batch);
 			base.Draw(gameTime);
 		}
 	}
