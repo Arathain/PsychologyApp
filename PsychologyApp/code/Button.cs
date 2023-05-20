@@ -18,6 +18,9 @@ namespace PsychologyApp.code {
         public virtual void onPress() {
 
         }
+        public bool isPressedM() {
+            return isPressed;
+        }
 
         public abstract Boolean isHovering(MouseState mouse);
 

@@ -13,7 +13,8 @@ namespace PsychologyApp.code
     public class InstTestScreen : Screen {
        
         private System.Timers.Timer timer;
-        private System.Timers.Timer sfxTimer;
+        public System.Timers.Timer sfxTimer;
+        private DateTime startTime;
         public SoundEffectInstance sound;
         Random rand = new Random();
         private int trialCounter = 0;
@@ -23,8 +24,15 @@ namespace PsychologyApp.code
         public bool sufficientTrials() {
             return trialCounter <= 25;
         }
+        public void sendData(int responseTime) {
+            Program.gameInstance.responseIntervalTotallyNotTelemetry.Add(responseTime);
+        }
+        public TimeSpan getRunning() {
+            return startTime - DateTime.Now;
+        }
         private System.Timers.Timer makeTimer() {
             System.Timers.Timer time = new System.Timers.Timer(PsychologyAppGame.intervals[trialCounter]);
+            startTime = DateTime.Now;
             time.Elapsed += ( sender, e ) => {
                 sound = ContentDocks.BUZZ.CreateInstance();
                 sound.Play();
@@ -37,10 +45,11 @@ namespace PsychologyApp.code
                             b.activate();
                         }
                     }
+                    sendData(5000);
                 };
                 trialCounter++;
             };
-            time.Disposed += ( sender, e ) => {
+            time.Disposed += ( sender, arg ) => {
                 resetTimer();
             };
             //time.AutoReset = true;
@@ -49,6 +58,7 @@ namespace PsychologyApp.code
         public void escape() {
             sfxTimer.Stop();
             sfxTimer.Dispose();
+            sendData(getRunning().Milliseconds);
             foreach(ScreenObject s in objects) {
                 if(s is BlueLight b) {
                     b.activate();

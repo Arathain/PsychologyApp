@@ -35,7 +35,7 @@ namespace PsychologyApp.code
             } else if(previous.LeftButton == ButtonState.Pressed && current.LeftButton == ButtonState.Released) {
                 //release
                 foreach(ScreenObject o in objects) {
-                    if(o is Button b) {
+                    if(o is Button b && b.isPressedM()) {
                         b.release();
                     }
                 }

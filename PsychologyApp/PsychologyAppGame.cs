@@ -14,6 +14,8 @@ namespace PsychologyApp {
 		private int width, height;
 		private Vector2 centre;
 		private SpriteBatch batch;
+		public bool escapeable;
+		public List<int> responseIntervalTotallyNotTelemetry = new List<int>();
 		public static int[] intervals = new int[]{
 			14100,
 			14900,
@@ -62,6 +64,7 @@ namespace PsychologyApp {
 			IsMouseVisible = true;
 			List<ScreenObject> s = new List<ScreenObject>();
 			s.Add(new StartButton(0, 0));
+			s.Add(new SoundButton(60, -40));
 			currentScreen = new StartScreen(s);
 		}
 
@@ -93,7 +96,7 @@ namespace PsychologyApp {
 			// Replace this with your own drawing code.
 			//
 
-			GraphicsDevice.Clear(Color.SlateGray);
+			GraphicsDevice.Clear(Color.Gray);
 			currentScreen.draw(gameTime, batch);
 			base.Draw(gameTime);
 		}
