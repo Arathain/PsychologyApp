@@ -36,6 +36,7 @@ namespace PsychologyApp.code
             OLIGHT_0 = cnt.Load<Texture2D>("olight_0");
             OLIGHT_1 = cnt.Load<Texture2D>("olight_1");
             BUZZ = cnt.Load<SoundEffect>("1kHz");
+            LetterDocks.load(cnt);
         }
 
         public static void unload() {
@@ -51,6 +52,7 @@ namespace PsychologyApp.code
             OLIGHT_0.Dispose();
             OLIGHT_1.Dispose();
             BUZZ.Dispose();
+            LetterDocks.unload();
         }
         
         // private Texture2D haul(String descriptor) {
