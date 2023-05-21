@@ -50,7 +50,11 @@ namespace PsychologyApp.code
                 trialCounter++;
             };
             time.Disposed += ( sender, arg ) => {
-                resetTimer();
+                if(!sufficientTrials()) {
+                    resetTimer();
+                } else {
+
+                }
             };
             //time.AutoReset = true;
             return time;
