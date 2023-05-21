@@ -10,7 +10,7 @@ using Microsoft.Xna.Framework.Content;
 
 namespace PsychologyApp.code
 {
-    public class ContentDocks {
+    public abstract class ContentDocks {
         public static Texture2D BUTTON_0;
         public static Texture2D BUTTON_1;
         public static Texture2D START_0;
@@ -22,6 +22,7 @@ namespace PsychologyApp.code
         public static Texture2D LIGHT_1;
         public static Texture2D OLIGHT_0;
         public static Texture2D OLIGHT_1;
+        public static Texture2D UNDERSCORE;
         public static SoundEffect BUZZ;
         public static void load(ContentManager cnt) {
             BUTTON_0 = cnt.Load<Texture2D>("button_0");
@@ -35,8 +36,8 @@ namespace PsychologyApp.code
             LIGHT_1 = cnt.Load<Texture2D>("light_1");
             OLIGHT_0 = cnt.Load<Texture2D>("olight_0");
             OLIGHT_1 = cnt.Load<Texture2D>("olight_1");
+            UNDERSCORE = cnt.Load<Texture2D>("-");
             BUZZ = cnt.Load<SoundEffect>("1kHz");
-            LetterDocks.load(cnt);
         }
 
         public static void unload() {
@@ -51,11 +52,8 @@ namespace PsychologyApp.code
             LIGHT_1.Dispose();
             OLIGHT_0.Dispose();
             OLIGHT_1.Dispose();
+            UNDERSCORE.Dispose();
             BUZZ.Dispose();
-            LetterDocks.unload();
         }
-        
-        // private Texture2D haul(String descriptor) {
-        // }
     }
 }

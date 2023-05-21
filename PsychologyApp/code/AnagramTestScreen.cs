@@ -2,13 +2,82 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 
 namespace PsychologyApp.code
 {
     public class AnagramTestScreen : Screen {
-        
+        private static string[] anagrams = new string[] {
+            "Blood",
+            "Jolly",
+            "Bling",
+            "Heart",
+            "Since",
+            "Metal",
+            "Class",
+            "Grief",
+            "Dream",
+            "Angry",
+            "Bread",
+            "Black",
+            "Clean",
+            "Erase",
+            "Laser",
+            "Smart",
+            "Piano",
+            "Sleep",
+            "Drone",
+            "Train"
+        };
+        private int currentAnagram = 0;
+        private List<char> input = new List<char>();
+
+        Random rand = new Random();
         public AnagramTestScreen(List<ScreenObject> setup) : base(setup) {
-        
+            //Shuffle<string>(rand, anagrams);
+        }
+        public void addChar(char inputtedChar) {
+            if(input.Count < 5) {
+                input.Add(inputtedChar);
+                if(new string(input.ToArray()).ToLower() == anagrams[currentAnagram].ToLower()) {
+                    currentAnagram++;
+                    clearInput();
+                }
+            }
+        }
+        public void clearInput() {
+            input.Clear();
+        }
+        public static void Shuffle<T> (Random rng, T[] array) {
+            int n = array.Length;
+            while (n > 1) 
+            {
+                int k = rng.Next(n--);
+                T temp = array[n];
+                array[n] = array[k];
+                array[k] = temp;
+            }
+        }
+        public static string ShuffleString(string str) {
+            return (str[4].ToString() + str[2].ToString() + str[1].ToString() + str[0].ToString() + str[3].ToString()).ToLower();
+        }
+
+        public override void drawBackground(SpriteBatch batch) {
+            base.drawBackground(batch);
+            Vector2 centre = Program.gameInstance.getCentre();
+            string anagram = ShuffleString(anagrams[currentAnagram]);
+            for (int i = 0; i < anagram.Length; i++){
+                batch.Draw(LetterDocks.getTextureForChar(anagram[i]), ScreenObject.getSpriteDefault((int)(centre.X-40*8+i*20*8), (int)(centre.Y-10*8), 16, 16), Color.Black);
+            }
+            if((double) ((DateTime.Now.Second*1000+DateTime.Now.Millisecond) % 1800) / 900 > 1) {
+                batch.Draw(ContentDocks.UNDERSCORE, ScreenObject.getSpriteDefault((int)(centre.X-40*8+input.Count*20*8), (int)(centre.Y+64), 16, 16), Color.Black);
+            }
+        }
+
+        public override void update(GameTime gameTime, MouseState current, MouseState previous) {
+            base.update(gameTime, current, previous);
         }
     }
 }

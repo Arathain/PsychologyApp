@@ -62,22 +62,28 @@ namespace PsychologyApp {
 
 			Window.AllowUserResizing = true;
 			IsMouseVisible = true;
-			List<ScreenObject> s = new List<ScreenObject>();
-			s.Add(new StartButton(0, 0));
-			s.Add(new SoundButton(60, -40));
-			currentScreen = new StartScreen(s);
+			//List<ScreenObject> s = new List<ScreenObject>();
+			//s.Add(new StartButton(0, 0));
+			//s.Add(new SoundButton(60, -40));
+			//currentScreen = new StartScreen(s);
+			currentScreen = new AnagramTestScreen(new List<ScreenObject>());
+			StartTextInput();
 		}
 
 		protected override void LoadContent() {
 			base.LoadContent();
 			ContentDocks.load(Content);
+			LetterDocks.load(Content);
 			batch = new SpriteBatch(graphics.GraphicsDevice);
 		}
 
 		protected override void UnloadContent() {
 			base.UnloadContent();
 			ContentDocks.unload();
-			batch.Dispose();
+			LetterDocks.unload();
+			if(batch != null && !batch.IsDisposed) {
+				batch.Dispose();
+			}
 		}
 
 		protected override void Update(GameTime gameTime) {
@@ -99,6 +105,29 @@ namespace PsychologyApp {
 			GraphicsDevice.Clear(Color.Gray);
 			currentScreen.draw(gameTime, batch);
 			base.Draw(gameTime);
+		}
+		private void OnTextInput(char c) {
+			bool b = c == (char) 8 || c == (char) 127;
+			if((LetterDocks.isSupported(c) || b) && currentScreen is AnagramTestScreen a) {
+				if(b) {
+					a.clearInput();
+				} else {
+					a.addChar(c);
+				}
+				System.Console.WriteLine("TEXT ENTERED: " + c.ToString());
+			}	
+		}
+
+		public void StartTextInput()
+		{
+			TextInputEXT.TextInput += OnTextInput;
+			TextInputEXT.StartTextInput();
+		}
+
+		public void StopTextInput()
+		{
+			TextInputEXT.StopTextInput();
+			TextInputEXT.TextInput -= OnTextInput;
 		}
 	}
 }

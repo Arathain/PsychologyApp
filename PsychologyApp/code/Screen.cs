@@ -41,13 +41,13 @@ namespace PsychologyApp.code
                 }
             }
         }
-        public void drawBackground() {
+        public virtual void drawBackground(SpriteBatch batch) {
 
         }
         
         public void draw(GameTime gameTime, SpriteBatch batch) {
             batch.Begin(SpriteSortMode.Deferred, BlendState.AlphaBlend, SamplerState.PointClamp, DepthStencilState.Default, RasterizerState.CullNone);
-            drawBackground();
+            drawBackground(batch);
             foreach(ScreenObject o in objects) {
                 o.draw(gameTime, batch);
             }
