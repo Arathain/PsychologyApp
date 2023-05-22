@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework.Input;
 
 namespace PsychologyApp.code
 {
-    public class AnagramTestScreen : Screen {
+    public class AnagramTestScreen : Screen, KeyListenerScreen {
         private static string[] anagrams = new string[] {
             "Blood",
             "Jolly",
@@ -31,6 +31,13 @@ namespace PsychologyApp.code
             "Drone",
             "Train"
         };
+        //THE TIME ZONE
+        private DateTime startTime;
+        public TimeSpan getRunning() {
+            return startTime - DateTime.Now;
+        }
+
+        //END TIME ZONE
         private int currentAnagram = 0;
         private List<char> input = new List<char>();
 
@@ -38,12 +45,23 @@ namespace PsychologyApp.code
         public AnagramTestScreen(List<ScreenObject> setup) : base(setup) {
             //Shuffle<string>(rand, anagrams);
         }
+
+        public void sendData(int responseTime) {
+            Program.gameInstance.anagramResponseIntervalTotallyNotTelemetry.Add(responseTime);
+        }
         public void addChar(char inputtedChar) {
             if(input.Count < 5) {
                 input.Add(inputtedChar);
                 if(new string(input.ToArray()).ToLower() == anagrams[currentAnagram].ToLower()) {
                     currentAnagram++;
+                    sendData(getRunning().Minutes*60*1000+getRunning().Seconds*1000+getRunning().Milliseconds);
                     clearInput();
+                    startTime = DateTime.Now;
+                    if(anagrams.Length <= currentAnagram) {
+                        Program.gameInstance.currentScreen = new TransScreen(new List<ScreenObject>(), () => {
+                        Program.gameInstance.DoStorageContainerThing();
+                    });
+                    }
                 }
             }
         }

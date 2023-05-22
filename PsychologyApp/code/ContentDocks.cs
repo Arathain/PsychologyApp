@@ -23,6 +23,7 @@ namespace PsychologyApp.code
         public static Texture2D OLIGHT_0;
         public static Texture2D OLIGHT_1;
         public static Texture2D UNDERSCORE;
+        public static Texture2D COMPLETED;
         public static SoundEffect BUZZ;
         public static void load(ContentManager cnt) {
             BUTTON_0 = cnt.Load<Texture2D>("button_0");
@@ -37,6 +38,7 @@ namespace PsychologyApp.code
             OLIGHT_0 = cnt.Load<Texture2D>("olight_0");
             OLIGHT_1 = cnt.Load<Texture2D>("olight_1");
             UNDERSCORE = cnt.Load<Texture2D>("-");
+            COMPLETED = cnt.Load<Texture2D>("completed");
             BUZZ = cnt.Load<SoundEffect>("1kHz");
         }
 
@@ -53,6 +55,7 @@ namespace PsychologyApp.code
             OLIGHT_0.Dispose();
             OLIGHT_1.Dispose();
             UNDERSCORE.Dispose();
+            COMPLETED.Dispose();
             BUZZ.Dispose();
         }
     }

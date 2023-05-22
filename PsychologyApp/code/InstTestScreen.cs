@@ -22,24 +22,25 @@ namespace PsychologyApp.code
             resetTimer();
         }
         public bool sufficientTrials() {
-            return trialCounter <= 25;
+            return trialCounter >= 5;
         }
         public void sendData(int responseTime) {
             Program.gameInstance.responseIntervalTotallyNotTelemetry.Add(responseTime);
         }
         public TimeSpan getRunning() {
-            return startTime - DateTime.Now;
+            return DateTime.Now - startTime;
         }
         private System.Timers.Timer makeTimer() {
-            System.Timers.Timer time = new System.Timers.Timer(PsychologyAppGame.intervals[trialCounter]);
+            System.Timers.Timer time = new System.Timers.Timer(PsychologyAppGame.intervals[trialCounter]-2000);
             startTime = DateTime.Now;
             time.Elapsed += ( sender, e ) => {
-                sound = ContentDocks.BUZZ.CreateInstance();
-                sound.Play();
-                sfxTimer = new Timer(5000);
-                sfxTimer.AutoReset = false;
-                sfxTimer.Start();
-                sfxTimer.Elapsed += ( sss, eb ) => { 
+                if(!sufficientTrials()) {
+                    sound = ContentDocks.BUZZ.CreateInstance();
+                    sound.Play();
+                    sfxTimer = new Timer(5000);
+                    sfxTimer.AutoReset = false;
+                    sfxTimer.Start();
+                    sfxTimer.Elapsed += ( sss, eb ) => { 
                     foreach(ScreenObject s in objects) {
                         if(s is OrangeLight b) {
                             b.activate();
@@ -48,21 +49,21 @@ namespace PsychologyApp.code
                     sendData(5000);
                 };
                 trialCounter++;
-            };
-            time.Disposed += ( sender, arg ) => {
-                if(!sufficientTrials()) {
                     resetTimer();
                 } else {
-
+                    Program.gameInstance.currentScreen = new TransScreen(new List<ScreenObject>(), () => {
+                        Program.gameInstance.currentScreen = new AnagramTestScreen(new List<ScreenObject>());
+                    });
+                    Program.gameInstance.StartTextInput();
                 }
             };
-            //time.AutoReset = true;
+            time.AutoReset = false;
             return time;
         }
         public void escape() {
             sfxTimer.Stop();
             sfxTimer.Dispose();
-            sendData(getRunning().Milliseconds);
+            sendData(getRunning().Minutes*60*1000+getRunning().Seconds*1000+getRunning().Milliseconds);
             foreach(ScreenObject s in objects) {
                 if(s is BlueLight b) {
                     b.activate();
@@ -91,7 +92,7 @@ namespace PsychologyApp.code
             cooldown.AutoReset = false;
             cooldown.Elapsed += ( sender, e ) => {
                 setPressed(false);
-                if(this.screen.Invoke() is InstTestScreen scr && scr.sound != null && scr.sound.State == SoundState.Playing) {
+                if(this.screen.Invoke() is InstTestScreen scr && scr.sound != null && scr.sound.State == SoundState.Playing && Program.gameInstance.escapeable) {
                     prog++;
                     if(prog > 3) {
                         scr.sound.Pause();
