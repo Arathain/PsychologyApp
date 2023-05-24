@@ -33,6 +33,7 @@ namespace PsychologyApp.code
 			        s.Add(new BlueLight(-30, -20));
 			        s.Add(new OrangeLight(30, -20));
 			        Program.gameInstance.currentScreen = new InstTestScreen(s);
+                    Program.gameInstance.StartTextInput();
                 }
             };
         }

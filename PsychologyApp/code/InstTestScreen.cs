@@ -8,8 +8,7 @@ using Microsoft.Xna.Framework.Content;
 
 using System.Timers;
 
-namespace PsychologyApp.code
-{
+namespace PsychologyApp.code {
     public class InstTestScreen : Screen {
        
         private System.Timers.Timer timer;
@@ -19,10 +18,10 @@ namespace PsychologyApp.code
         Random rand = new Random();
         private int trialCounter = 0;
         public InstTestScreen(List<ScreenObject> setup) : base(setup) {
-            resetTimer();
+
         }
         public bool sufficientTrials() {
-            return trialCounter >= 5;
+            return trialCounter >= 18;
         }
         public void sendData(int responseTime) {
             Program.gameInstance.responseIntervalTotallyNotTelemetry.Add(responseTime);
@@ -44,11 +43,14 @@ namespace PsychologyApp.code
                     foreach(ScreenObject s in objects) {
                         if(s is OrangeLight b) {
                             b.activate();
+                    
                         }
                     }
                     sendData(5000);
+                    
                 };
                 trialCounter++;
+                if(!sufficientTrials()) {
                     resetTimer();
                 } else {
                     Program.gameInstance.currentScreen = new TransScreen(new List<ScreenObject>(), () => {
@@ -56,7 +58,9 @@ namespace PsychologyApp.code
                     });
                     Program.gameInstance.StartTextInput();
                 }
+                }
             };
+            
             time.AutoReset = false;
             return time;
         }
@@ -87,7 +91,7 @@ namespace PsychologyApp.code
             
         }
         private void makeCD() {
-            cooldown = new Timer(200);
+            cooldown = new Timer(60);
             cooldown.Start();
             cooldown.AutoReset = false;
             cooldown.Elapsed += ( sender, e ) => {

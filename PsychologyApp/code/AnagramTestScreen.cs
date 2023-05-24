@@ -34,7 +34,7 @@ namespace PsychologyApp.code
         //THE TIME ZONE
         private DateTime startTime;
         public TimeSpan getRunning() {
-            return startTime - DateTime.Now;
+            return DateTime.Now - startTime;
         }
 
         //END TIME ZONE
@@ -44,6 +44,7 @@ namespace PsychologyApp.code
         Random rand = new Random();
         public AnagramTestScreen(List<ScreenObject> setup) : base(setup) {
             //Shuffle<string>(rand, anagrams);
+            startTime = DateTime.Now;
         }
 
         public void sendData(int responseTime) {
@@ -89,13 +90,27 @@ namespace PsychologyApp.code
             for (int i = 0; i < anagram.Length; i++){
                 batch.Draw(LetterDocks.getTextureForChar(anagram[i]), ScreenObject.getSpriteDefault((int)(centre.X-40*8+i*20*8), (int)(centre.Y-10*8), 16, 16), Color.Black);
             }
+            for (int i = 0; i < input.Count; i++){
+                batch.Draw(LetterDocks.getTextureForChar(input[i]), ScreenObject.getSpriteDefault((int)(centre.X-40*8+i*20*8), (int)(centre.Y+15*8), 16, 16), Color.Black);
+            }
             if((double) ((DateTime.Now.Second*1000+DateTime.Now.Millisecond) % 1800) / 900 > 1) {
-                batch.Draw(ContentDocks.UNDERSCORE, ScreenObject.getSpriteDefault((int)(centre.X-40*8+input.Count*20*8), (int)(centre.Y+64), 16, 16), Color.Black);
+                batch.Draw(ContentDocks.UNDERSCORE, ScreenObject.getSpriteDefault((int)(centre.X-40*8+input.Count*20*8), (int)(centre.Y+21*8), 16, 16), Color.Black);
             }
         }
 
         public override void update(GameTime gameTime, MouseState current, MouseState previous) {
             base.update(gameTime, current, previous);
+            if(getRunning().Minutes*60+getRunning().Seconds+getRunning().Milliseconds/1000f > 30) {
+                currentAnagram++;
+                    sendData(getRunning().Minutes*60*1000+getRunning().Seconds*1000+getRunning().Milliseconds);
+                    clearInput();
+                    startTime = DateTime.Now;
+                    if(anagrams.Length <= currentAnagram) {
+                        Program.gameInstance.currentScreen = new TransScreen(new List<ScreenObject>(), () => {
+                        Program.gameInstance.DoStorageContainerThing();
+                    });
+                }
+            }
         }
     }
 }

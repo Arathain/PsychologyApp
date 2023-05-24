@@ -122,11 +122,11 @@ namespace PsychologyApp {
 		Console.WriteLine("escapeable: " + escapeable);
 		Console.WriteLine("button response times, if any:");
 		foreach(int i in responseIntervalTotallyNotTelemetry) {
-			Console.WriteLine(i);
+			Console.WriteLine(i/1000f);
 		}
 		Console.WriteLine("anagram response times, if any:");
 		foreach(int i in anagramResponseIntervalTotallyNotTelemetry) {
-			Console.WriteLine(i);
+			Console.WriteLine(i/1000f);
 		}
 		
 		// Clean up after yourself! Maybe keep `device` from getting collected.
@@ -165,6 +165,10 @@ namespace PsychologyApp {
 		}
 		private void OnTextInput(char c) {
 			bool b = c == (char) 8 || c == (char) 127;
+			if(c == (char) 13 && currentScreen is InstTestScreen s) {
+				s.resetTimer();
+				StopTextInput();
+			}
 			if((LetterDocks.isSupported(c) || b) && currentScreen is KeyListenerScreen a) {
 				if(b) {
 					a.clearInput();
